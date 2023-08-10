@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.kh.notice.model.service.NoticeService;
 import com.kh.notice.model.vo.Notice;
+import com.kh.notice.model.vo.PageData;
 
 /**
  * Servlet implementation class ListController
@@ -32,15 +33,17 @@ public class ListController extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		//SELECT * FROM 
 		NoticeService service = new NoticeService();
 		String page = request.getParameter("currentPage") != null ? request.getParameter("currentPage") : "1";
 		int currentPage = Integer.parseInt(page);
-		List<Notice> nList = service.selectNoticeList(currentPage);
+		PageData pd = service.selectNoticeList(currentPage);
+		List<Notice> nList = pd.getnList();
+		String pageNavi = pd.getPageNavi();
 		
 		if(!nList.isEmpty()) {
 			//성공 -> list.jsp로 이동
 			request.setAttribute("nList", nList);
+			request.setAttribute("pageNavi", pageNavi);
 			RequestDispatcher view = request.getRequestDispatcher("/WEB-INF/views/notice/list.jsp");
 			view.forward(request, response);
 		} else {

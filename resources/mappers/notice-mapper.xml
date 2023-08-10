@@ -37,6 +37,11 @@
 		DELETE FROM NOTICE_TBL WHERE NOTICE_NO = #{noticeNo }
 	</delete>
 	
+<!-- 	가져오는 값이 여러개인 경우 resultMap, 하나의 값만 가져오는 경우 resultType="_int" -->
+	<select id="getTotalCount" resultType="_int">
+		SELECT COUNT(*) FROM NOTICE_TBL
+	</select>
+	
 	
 
    
